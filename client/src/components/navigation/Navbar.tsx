@@ -18,6 +18,7 @@ const Navbar = ({ history }: RouteComponentProps) => {
         <Row>
           <NavbarLogo tabIndex={0} onClick={handleClick}>
             {isSearch ? 'Search Engine' : 'Neural Covidex'}
+            <NavbarSubtitle>powered by Milvus</NavbarSubtitle>
           </NavbarLogo>
         </Row>
       </PageContent>
@@ -48,9 +49,17 @@ const Row = styled.div`
 const NavbarLogo = styled.a`
   display: flex;
   ${Heading1}
+  align-items: center;
   position: relative;
   font-weight: 800;
   cursor: pointer;
   color: ${({ theme }) => theme.white};
   max-width: fit-content;
+  margin-right: 8px;
+`;
+
+const NavbarSubtitle = styled.span`
+  display: inline-block;
+  margin-left: 8px;
+  font-size: 16px;
 `;

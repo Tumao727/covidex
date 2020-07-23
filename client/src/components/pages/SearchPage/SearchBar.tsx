@@ -69,7 +69,6 @@ export default withRouter(SearchBar);
 
 const SearchBarWrapper = styled.div`
   position: relative;
-  margin-right: auto;
   display: flex;
   margin-bottom: 24px;
   width: 860px;

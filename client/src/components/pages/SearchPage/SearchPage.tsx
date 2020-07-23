@@ -14,6 +14,7 @@ import { SearchResultView } from '../../../shared/Models';
 import SearchResult from './SearchResult';
 import Navbar from '../../navigation/Navbar';
 import Keycodes from '../../../shared/Keycodes';
+import MilvusLogo from '../../../img/logo.svg';
 
 const SearchPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -47,11 +48,15 @@ const SearchPage = () => {
     if (query) {
       fetchSearchResults(query);
       setQuery(query);
+    } else {
+      if (searched) {
+        setSearched(false);
+        return;
+      }
     }
 
-    setSearchResults([]);
-
     setSearched(true);
+    setSearchResults([]);
   };
 
   const fetchSearchResults = async (query: string) => {
@@ -88,11 +93,12 @@ const SearchPage = () => {
 
   const clearSearchResult = () => {
     setSearchResults([]);
+    setSearched(false);
   };
 
   return (
     <>
-      {searchResults.length === 0 ? (
+      {searchResults.length === 0 && !searched ? (
         <Navbar />
       ) : (
         <NavbarWrapper>
@@ -100,6 +106,7 @@ const SearchPage = () => {
             <Row>
               <NavbarLogo tabIndex={0} onClick={clearSearchResult}>
                 Search Engine
+                <NavbarSubtitle>powered by Milvus</NavbarSubtitle>
               </NavbarLogo>
               <SearchInputWrapper>
                 <SearchIcon />
@@ -116,7 +123,12 @@ const SearchPage = () => {
       )}
       <PageWrapper>
         <PageContent>
-          {searchResults.length > 0 ? null : <SearchBar onSearch={onSearch} />}
+          {searchResults.length > 0 || searched ? null : (
+            <SearchContainer>
+              <Logo src={MilvusLogo} alt="logo" />
+              <SearchBar onSearch={onSearch} />
+            </SearchContainer>
+          )}
 
           <ErrorBoundary FallbackComponent={() => <NoResult>No results found</NoResult>}>
             {loading && <Loading />}
@@ -171,6 +183,7 @@ const Row = styled.div`
 const NavbarLogo = styled.a`
   display: flex;
   ${Heading1}
+  align-items: center;
   position: relative;
   font-weight: 800;
   cursor: pointer;
@@ -179,11 +192,25 @@ const NavbarLogo = styled.a`
   margin-right: 16px;
 `;
 
+const NavbarSubtitle = styled.span`
+  display: inline-block;
+  margin-left: 8px;
+  font-size: 16px;
+`;
+
 const SearchInputWrapper = styled.div`
   display: flex;
   flex: 1;
   position: relative;
   align-items: center;
+`;
+
+const SearchContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 150px;
 `;
 
 const SearchIcon = styled(Search)`
@@ -212,4 +239,9 @@ const SearchBarInput = styled.input`
   &:focus {
     border: 1px solid transparent;
   }
+`;
+
+const Logo = styled.img`
+  width: 40%;
+  height: auto;
 `;
