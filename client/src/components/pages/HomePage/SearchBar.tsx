@@ -71,7 +71,6 @@ const SearchBar = ({ query, vertical, setQuery, setVertical, history }: SearchBa
 
   return (
     <SearchBarWrapper>
-      <Section></Section>
       <Section>
         <SearchInputWrapper>
           <SearchBarInput
