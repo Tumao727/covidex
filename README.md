@@ -2,14 +2,13 @@
 
 This system contains the API server, neural models, and UI client, a neural search engine for the [COVID-19 Open Research Dataset (CORD-19)](https://pages.semanticscholar.org/coronavirus-research) and is refer to [covidex](https://github.com/castorini/covidex).
 
-
 ## Local Deployment
 
 ### Requirements
 
 - Install [CUDA 10.1](https://developer.nvidia.com/cuda-10.1-download-archive-update2)
 
-+ Install [Anaconda](https://docs.anaconda.com/anaconda/install/linux/)
+* Install [Anaconda](https://docs.anaconda.com/anaconda/install/linux/)
 
   ```bash
   $ wget https://repo.anaconda.com/archive/Anaconda3-2020.02-Linux-x86_64.sh
@@ -18,9 +17,9 @@ This system contains the API server, neural models, and UI client, a neural sear
 
 - Install Java 11
 
-    ```bash
-    $ sudo apt-get install openjdk-11-jre openjdk-11-jdk
-    ```
+  ```bash
+  $ sudo apt-get install openjdk-11-jre openjdk-11-jdk
+  ```
 
 ### Run Server
 
@@ -73,26 +72,24 @@ $ uvicorn app.main:app --reload --port=8000 --host=127.0.0.1
 
 The server wil be running at [127.0.0.1:8000](http://127.0.0.1:8000) with API documentation at [/docs](http://127.0.0.1:8000/docs)
 
-
 ### RUN UI Client
 
-- Install  [Node.js 12+](https://nodejs.org/en/download/) and [Yarn](https://classic.yarnpkg.com/en/docs/install/).
+- Install [Node.js 12+](https://nodejs.org/en/download/) and [Yarn](https://classic.yarnpkg.com/en/docs/install/).
 
 - Install dependencies
 
-    ```bash
-    # make sure you are in the client folder
-    $ cd client
-    $ yarn install
-    ```
+  ```bash
+  # make sure you are in the client folder
+  $ cd client
+  $ yarn install
+  ```
 
-    > change ip for your own enviroments
+  > If you changed the port of the server, please modify the parames at src/shared/Constants.ts at line 17 for your own enviroments.
 
 - Start the server
 
-    ```bash
-    $ yarn start
-    ```
+  ```bash
+  $ yarn start
+  ```
 
 The UI client will be running at [localhost:3000](http://localhost:3000)。
-
