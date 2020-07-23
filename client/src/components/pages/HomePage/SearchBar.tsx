@@ -3,12 +3,9 @@ import { Search } from 'react-feather';
 import styled from 'styled-components';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { Button } from 'reakit';
-import Select from 'react-select';
 
-import Theme from '../../../shared/Theme';
 import {
   HOME_ROUTE,
-  SEARCH_VERTICAL_OPTIONS,
   SearchVerticalOption,
   LARGE_MOBILE_BREAKPOINT,
 } from '../../../shared/Constants';
@@ -25,14 +22,6 @@ const CORD_EXAMPLES = [
   'What is the prognostic value of IL-6 levels in COVID-19?',
 ];
 
-const TRIALSTREAMER_EXAMPLES = [
-  'chloroquine',
-  'lopinavir',
-  'remdesivir',
-  'abidol hydrochloride',
-  'methylprednisolone',
-];
-
 interface SearchBarProps extends RouteComponentProps {
   query: string;
   vertical: SearchVerticalOption;
@@ -44,12 +33,7 @@ const SearchBar = ({ query, vertical, setQuery, setVertical, history }: SearchBa
   const [typeaheadIndex, setTypeaheadIndex] = useState<number>(-1);
   const [inputFocused, setInputFocused] = useState<boolean>(false);
 
-  let examples: Array<string>;
-  if (vertical.value === 'cord19') {
-    examples = CORD_EXAMPLES;
-  } else {
-    examples = TRIALSTREAMER_EXAMPLES;
-  }
+  const examples: Array<string> = CORD_EXAMPLES;
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => setQuery(event.target.value);
 
@@ -87,19 +71,7 @@ const SearchBar = ({ query, vertical, setQuery, setVertical, history }: SearchBa
 
   return (
     <SearchBarWrapper>
-      <Section>
-        <SearchBarText>Search</SearchBarText>
-        <Dropdown
-          styles={dropdownStyles}
-          className="dropdown"
-          width="200px"
-          options={SEARCH_VERTICAL_OPTIONS}
-          isSearchable={false}
-          value={vertical}
-          onChange={(value: SearchVerticalOption) => setVertical(value)}
-        />
-        <SearchBarText>for</SearchBarText>
-      </Section>
+      <Section></Section>
       <Section>
         <SearchInputWrapper>
           <SearchBarInput
@@ -152,13 +124,6 @@ const SearchBarWrapper = styled.div`
   @media only screen and (max-width: ${LARGE_MOBILE_BREAKPOINT}px) {
     flex-direction: column;
   }
-`;
-
-const SearchBarText = styled.div`
-  display: flex;
-  align-items: center;
-  color: ${({ theme }) => theme.darkGrey};
-  margin-right: 8px;
 `;
 
 const SearchIcon = styled(Search)`
@@ -258,53 +223,3 @@ const Section = styled.div`
     }
   }
 `;
-
-const Dropdown = styled(Select)``;
-const dropdownStyles = {
-  option: (provided: any, state: any) => ({
-    ...provided,
-    color: state.isFocused ? Theme.white : Theme.primary,
-    background: state.isFocused ? Theme.primary : Theme.white,
-    cursor: 'pointer',
-    '&:hover': {
-      background: Theme.primary,
-      color: Theme.white,
-    },
-  }),
-  menu: (provided: any) => ({
-    ...provided,
-    border: `1px solid ${Theme.lightGrey}`,
-    boxShadow: `0px 2px 5px rgba(236, 237, 237, 0.4),
-      0px 0px 5px rgba(142, 147, 148, 0.2)`,
-  }),
-  control: (_: any, state: any) => ({
-    width: 'fit-content',
-    border: `1px solid ${state.isFocused ? Theme.primary : Theme.grey}`,
-    marginRight: 8,
-    borderRadius: 4,
-    cursor: 'pointer',
-    display: 'flex',
-    padding: 4,
-    paddingLeft: 8,
-    minWidth: 150,
-    '&:hover': {
-      border: `1px solid ${Theme.primary}`,
-    },
-  }),
-  valueContainer: () => ({
-    display: 'flex',
-    flex: 1,
-    alignItems: 'center',
-    whiteSpace: 'nowrap',
-  }),
-  singleValue: () => ({
-    position: 'relative',
-    whiteSpace: 'nowrap',
-  }),
-  placeholder: () => ({
-    position: 'relative',
-  }),
-  indicatorSeparator: () => ({
-    display: 'none',
-  }),
-};
