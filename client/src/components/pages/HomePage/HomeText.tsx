@@ -25,11 +25,20 @@ const HomeText = () => {
       </Paragraph>
 
       <Paragraph>
-        The UI client and API Server is refer to{' '}
+        The{' '}
+        <Link
+          href="https://github.com/milvus-io/bootcamp/tree/master/EN_solutions"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Local Deployment of COVID-19 Dataset Search
+        </Link>{' '}
+        introduce how to run it, which is referenced from{' '}
         <Link href="https://github.com/castorini/covidex" target="_blank" rel="noopener noreferrer">
           covidex
         </Link>
-        , and Milvus is used to get the related articles. Let's start to have fun with it.
+        , and <Bold>Milvus</Bold> is used to get the related articles. Let's start to have fun with
+        it.
       </Paragraph>
     </HomeTextWrapper>
   );
