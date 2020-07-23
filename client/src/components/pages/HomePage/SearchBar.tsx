@@ -142,14 +142,14 @@ const SearchBarInput = styled.input`
   border-right: none;
 
   &:focus {
-    border: 1px solid ${({ theme }) => theme.primary};
+    border: 1px solid #4eb8f0;
     border-right: none;
   }
 `;
 
 const SearchButton = styled(Button)`
   display: flex;
-  background: ${({ theme }) => theme.primary};
+  background: #4eb8f0;
   border: none;
   padding: 12px 16px;
   cursor: pointer;

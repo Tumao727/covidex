@@ -6,12 +6,18 @@ import { TABLET_BREAKPOINT, HOME_ROUTE } from '../../shared/Constants';
 import { PageContent, Heading1 } from '../../shared/Styles';
 
 const Navbar = ({ history }: RouteComponentProps) => {
+  const isSearch = history.location.pathname === '/search';
+  const handleClick = () => {
+    if (!isSearch) {
+      history.push(HOME_ROUTE);
+    }
+  };
   return (
     <NavbarWrapper>
       <PageContent>
         <Row>
-          <NavbarLogo tabIndex={0} onClick={() => history.push(HOME_ROUTE)}>
-            Neural Covidex
+          <NavbarLogo tabIndex={0} onClick={handleClick}>
+            {isSearch ? 'Search Engine' : 'Neural Covidex'}
           </NavbarLogo>
         </Row>
       </PageContent>
@@ -26,7 +32,7 @@ const NavbarWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   position: relative;
-  background: linear-gradient(90deg, ${({ theme }) => `${theme.primary}, ${theme.secondary}`});
+  background-color: #4eb8f0;
 
   @media only screen and (max-width: ${TABLET_BREAKPOINT}px) {
     padding: 24px 16px;

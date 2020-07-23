@@ -29,6 +29,12 @@ export const Heading3 = css`
   font-weight: 400;
 `;
 
+export const Heading4 = css`
+  ${ROBOTO_SLAB_FONT}
+  font-size: 30px;
+  font-weight: 700;
+`;
+
 export const Body = css`
   ${ROBOTO_FONT}
   font-size: 16px;
@@ -44,10 +50,9 @@ export const BodySmall = css`
 export const LinkStyle = css`
   cursor: pointer;
   text-decoration: none;
-  color: ${({ theme }) => theme.primary};
+  color: #4eb8f0;
 
   &:hover {
-    color: ${({ theme }) => theme.secondary};
     text-decoration: underline;
   }
 `;

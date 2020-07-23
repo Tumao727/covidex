@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { ChevronsDown } from 'react-feather';
 
-import { LinkStyle, BodySmall, FadeInText, Heading3 } from '../../../shared/Styles';
+import { LinkStyle, BodySmall, FadeInText, Heading4 } from '../../../shared/Styles';
 
 import { SearchResultView } from '../../../shared/Models';
 
@@ -81,7 +81,7 @@ const ResultText = styled.div<{
 `;
 
 const Title = styled.div<{ bold?: boolean }>`
-  ${Heading3}
+  ${Heading4}
   margin-bottom: 16px;
   font-weight: ${({ bold }) => (bold ? 700 : 400)};
 `;
@@ -90,13 +90,15 @@ const Paragraph = styled(ResultText)`
   ${({ theme, collapsed }) =>
     collapsed
       ? `
-        -webkit-line-clamp: 2;
+        -webkit-line-clamp: 3;
         display: -webkit-box;
+        font-size: 20px;
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
       `
       : `
+        font-size: 20px;
         padding-left: 8px;
         border-left: 1px solid ${theme.lightGrey};
       `}

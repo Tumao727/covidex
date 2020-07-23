@@ -1,22 +1,55 @@
-import React, { useState } from 'react';
-import { PageWrapper, PageContent, Heading2 } from '../../../shared/Styles';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Search } from 'react-feather';
+import { PageWrapper, PageContent, Heading1, Heading2 } from '../../../shared/Styles';
 import SearchBar from './SearchBar';
 import ErrorBoundary from 'react-error-boundary';
 import styled from 'styled-components';
 import Loading from '../../common/Loading';
-import { SEARCH_API_BASE, SEARCH_PAGE_ENDPOINT } from '../../../shared/Constants';
+import {
+  SEARCH_API_BASE,
+  SEARCH_PAGE_ENDPOINT,
+  TABLET_BREAKPOINT,
+} from '../../../shared/Constants';
 import { SearchResultView } from '../../../shared/Models';
 import SearchResult from './SearchResult';
+import Navbar from '../../navigation/Navbar';
+import Keycodes from '../../../shared/Keycodes';
 
 const SearchPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [searchResults, setSearchResults] = useState<SearchResultView[]>([]);
   const [searched, setSearched] = useState<boolean>(false);
+  const [inputFocused, setInputFocused] = useState<boolean>(false);
+  const [query, setQuery] = useState<string>('');
+
+  useEffect(() => {
+    document.title = 'Search Engine';
+  }, []);
+
+  const handleUserKeyPress = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.keyCode === Keycodes.ENTER && inputFocused) {
+        onSearch(query);
+      }
+    },
+    // eslint-disable-next-line
+    [query, inputFocused],
+  );
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleUserKeyPress);
+    return () => {
+      window.removeEventListener('keydown', handleUserKeyPress);
+    };
+  }, [handleUserKeyPress]);
 
   const onSearch = (query: string) => {
     if (query) {
       fetchSearchResults(query);
+      setQuery(query);
     }
+
+    setSearchResults([]);
 
     setSearched(true);
   };
@@ -51,25 +84,55 @@ const SearchPage = () => {
     } as SearchResultView;
   };
 
-  return (
-    <PageWrapper>
-      <PageContent>
-        <SearchBar onSearch={onSearch} />
+  const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => setQuery(event.target.value);
 
-        <ErrorBoundary FallbackComponent={() => <NoResult>No results found</NoResult>}>
-          {loading && <Loading />}
-          {searchResults.length > 0 ? (
-            <SearchResults>
-              {searchResults.map((result, i) => {
-                return <SearchResult result={result} key={`${i}${new Date().toTimeString()}`} />;
-              })}
-            </SearchResults>
-          ) : (
-            <NoResult>{searched && !loading ? 'No results found' : ''}</NoResult>
-          )}
-        </ErrorBoundary>
-      </PageContent>
-    </PageWrapper>
+  const clearSearchResult = () => {
+    setSearchResults([]);
+  };
+
+  return (
+    <>
+      {searchResults.length === 0 ? (
+        <Navbar />
+      ) : (
+        <NavbarWrapper>
+          <PageContent>
+            <Row>
+              <NavbarLogo tabIndex={0} onClick={clearSearchResult}>
+                Search Engine
+              </NavbarLogo>
+              <SearchInputWrapper>
+                <SearchIcon />
+                <SearchBarInput
+                  value={query}
+                  onChange={handleInput}
+                  onFocus={() => setInputFocused(true)}
+                  onBlur={() => setInputFocused(false)}
+                />
+              </SearchInputWrapper>
+            </Row>
+          </PageContent>
+        </NavbarWrapper>
+      )}
+      <PageWrapper>
+        <PageContent>
+          {searchResults.length > 0 ? null : <SearchBar onSearch={onSearch} />}
+
+          <ErrorBoundary FallbackComponent={() => <NoResult>No results found</NoResult>}>
+            {loading && <Loading />}
+            {searchResults.length > 0 ? (
+              <SearchResults>
+                {searchResults.map((result, i) => {
+                  return <SearchResult result={result} key={`${i}${new Date().toTimeString()}`} />;
+                })}
+              </SearchResults>
+            ) : (
+              <NoResult>{searched && !loading ? 'No results found' : ''}</NoResult>
+            )}
+          </ErrorBoundary>
+        </PageContent>
+      </PageWrapper>
+    </>
   );
 };
 
@@ -85,4 +148,68 @@ const NoResult = styled.div`
 const SearchResults = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+const NavbarWrapper = styled.div`
+  padding: 24px 48px;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  background-color: #4eb8f0;
+
+  @media only screen and (max-width: ${TABLET_BREAKPOINT}px) {
+    padding: 24px 16px;
+  }
+`;
+
+const Row = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const NavbarLogo = styled.a`
+  display: flex;
+  ${Heading1}
+  position: relative;
+  font-weight: 800;
+  cursor: pointer;
+  color: ${({ theme }) => theme.white};
+  max-width: fit-content;
+  margin-right: 16px;
+`;
+
+const SearchInputWrapper = styled.div`
+  display: flex;
+  flex: 1;
+  position: relative;
+  align-items: center;
+`;
+
+const SearchIcon = styled(Search)`
+  display: inline;
+  height: 16px;
+  width: 16px;
+  position: absolute;
+  top: 10px;
+  left: 8px;
+
+  margin-right: 8px;
+  color: #fff;
+`;
+
+const SearchBarInput = styled.input`
+  display: flex;
+  width: 60%;
+  padding: 8px 12px 8px 32px;
+  outline: none;
+  color: #fff;
+  background-color: transparent;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  background-color: rgba(255, 255, 255, 0.5);
+
+  &:focus {
+    border: 1px solid transparent;
+  }
 `;

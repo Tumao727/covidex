@@ -16,18 +16,20 @@ const App = () => {
     <ThemeProvider theme={Theme}>
       <Router>
         <AppContainer>
-          <Navbar />
           <Switch>
             <Route exact path={HOME_ROUTE}>
+              <Navbar />
               <HomePage />
             </Route>
             <Route path={SEARCH_ROUTE}>
               <SearchPage />
             </Route>
             <Route path={`${RELATED_ROUTE}/:articleId`}>
+              <Navbar />
               <RelatedPage />
             </Route>
             <Route>
+              <Navbar />
               <NotFoundPage />
             </Route>
           </Switch>

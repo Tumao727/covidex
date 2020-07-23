@@ -88,6 +88,10 @@ const HomePage = () => {
   const [searchResults, setSearchResults] = useState<SearchArticle[] | null>(null);
 
   useEffect(() => {
+    document.title = 'Neural Covidex';
+  }, []);
+
+  useEffect(() => {
     setQueryInputText(query);
   }, [query]);
 
